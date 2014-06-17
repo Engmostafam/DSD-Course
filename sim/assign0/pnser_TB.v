@@ -40,10 +40,10 @@ module pnser_TB (/*AUTOARG*/);
       #10 rst_i <= 1;
       #20 rst_i <= 0;
 
-      rnd_i <= 32'h000000AB;
+      rnd_i <= 32'hAB000000;
       rnd_len <= 5'h8;
 
-      #100 rnd_i <= 32'h000009AB;
+      #100 rnd_i <= 32'h9AB00000;
       rnd_len <= 5'hC;
 
       #300 $finish;

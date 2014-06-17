@@ -2,6 +2,8 @@
  - Synchronization between the packetizer and the device being tested (deserializer) is achieved through the header and footer
  
  - An ACK signal is needed to synchronize with the random number generator. This is important so that the random number generator knows when to generate new data. 
+ 
+ - The module expects the data from the random number generator to be alligned to the MSB
 */ 
 
 module pnser (/*AUTOARG*/
@@ -72,9 +74,9 @@ module pnser (/*AUTOARG*/
 	     // End of automatics
 	  end
 	else if(state == read) // Load
-	  cnt <= rlength + 3'h4;
+	  cnt <= rlength + 3'h3;
 	else if ((state == srld) & (~|cnt))
-	  cnt <= 3'h4;
+	  cnt <= 3'h3;
 	else if ((state == srld) | (state == srlf))
 	  cnt <= cnt - 1'b1;
      end
@@ -117,7 +119,7 @@ module pnser (/*AUTOARG*/
 
    // Shift registers
 
-   reg [36:0] rhnd; // Header & Data shift register
+   reg [35:0] rhnd; // Header & Data shift register
    
    always @(posedge clk_i)
      begin
@@ -125,7 +127,7 @@ module pnser (/*AUTOARG*/
 	  begin
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     rhnd <= 37'h0;
+	     rhnd <= 36'h0;
 	     // End of automatics
 	  end
 	else if (state == read)
@@ -134,22 +136,18 @@ module pnser (/*AUTOARG*/
 	  rhnd <= {rhnd[35:0], 1'b0};
      end
 
-   reg [4:0] rfoot; // Footer Shift register
+   reg [3:0] rfoot; // Footer Shift register
    
    always @(posedge clk_i)
      begin
 	if(rst_i)
-	  begin
+	  rfoot <= FOOTER;
 	     /*AUTORESET*/
-	     // Beginning of autoreset for uninitialized flops
-	     rfoot <= 5'h0;
-	     // End of automatics
-	  end
 	else if (state == srlf)
-	  rfoot <= {rfoot[3:0] , rfoot[4]};
+	  rfoot <= {rfoot[2:0] , rfoot[3]};
      end
 
-   assign dat_o = (state == srlf)? rfoot[4] : rhnd[36];
+   assign dat_o = (state == srlf)? rfoot[3] : rhnd[35];
    
    
  
