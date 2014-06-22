@@ -59,9 +59,10 @@ module stpmtr (/*AUTOARG*/
 	     ack <= 1'h0;
 	     // End of automatics
 	  end
-	else if (fDONE)
+	else
 	  begin
-	     ack <= valid & !ack;
+	     ack <= fDONE & valid & !ack ;
+	     
 	  end
      end
 
@@ -69,6 +70,7 @@ module stpmtr (/*AUTOARG*/
    wire fDONE;
    wire fCW;
    wire fCCW;
+
 
    assign fDONE = (count == rPOS);
    assign fCW = (count > rPOS);
@@ -87,11 +89,11 @@ module stpmtr (/*AUTOARG*/
 	     count <= 8'h0;
 	     // End of automatics
 	  end
-	else if (fCW)
+	else if (fCW & pulse)
 	  begin
 	     count <= count -1'b1;
 	  end
-	else if (fCCW)
+	else if (fCCW & pulse)
 	  begin
 	     count <= count +1'b1;
 	  end
@@ -122,9 +124,13 @@ module stpmtr (/*AUTOARG*/
 	     pulse <= 1'h0;
 	     // End of automatics
 	  end
-	else 
+	else if (~fDONE)
 	  begin
 	     pulse <= ~pulse;
+	  end
+	else
+	  begin
+	     pulse <= 1'b0;
 	  end
      end
 
