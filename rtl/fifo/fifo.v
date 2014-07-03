@@ -64,6 +64,7 @@ module fifo (/*AUTOARG*/
      begin
 	if(rst_i)
 	  begin
+	     
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
 	     wptr1 <= {DEPTH{1'b0}};
@@ -79,10 +80,8 @@ module fifo (/*AUTOARG*/
 
    always @(posedge rclk or posedge rst_i)
      if(rst_i)
+       empty <= 1'h1;
 	  /*AUTORESET*/
-	  // Beginning of autoreset for uninitialized flops
-	  empty <= 1'h0;
-	  // End of automatics
        else
 	 empty <= (rptr == wptr2);
    
@@ -106,7 +105,7 @@ module fifo (/*AUTOARG*/
 
    always @(posedge wclk )
      if (!full)
-	     RAM[wptr] <= dat_i;
+       RAM[wptr] <= dat_i;
 
 
    // Sync For Read Pointer
@@ -116,11 +115,10 @@ module fifo (/*AUTOARG*/
      begin
 	if(rst_i)
 	  begin
+	     rptr1 <= {DEPTH{1'b1}};
+	     rptr2 <= {DEPTH{1'b1}};
+
 	     /*AUTORESET*/
-	     // Beginning of autoreset for uninitialized flops
-	     rptr1 <= {DEPTH{1'b0}};
-	     rptr2 <= {DEPTH{1'b0}};
-	     // End of automatics
 	  end
 	else
 	  begin
