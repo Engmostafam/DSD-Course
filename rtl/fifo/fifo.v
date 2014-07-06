@@ -12,7 +12,7 @@ module fifo (/*AUTOARG*/
    // Outputs
    full, dat_o, empty,
    // Inputs
-   dat_i, wclk, rclk, rst_i
+   dat_i, wclk, wen, rclk, ren, rst_i
    );
 
    parameter WIDTH = 4;
@@ -21,11 +21,13 @@ module fifo (/*AUTOARG*/
    // Write Side
    input [WIDTH-1:0] dat_i;
    input 	       wclk;
+   input 	       wen;
    output 	       full;
 
    // Read Side
    output [WIDTH-1:0]  dat_o;
    input 	       rclk;
+   input 	       ren;
    output 	       empty;
 
    input 	       rst_i;
@@ -51,7 +53,7 @@ module fifo (/*AUTOARG*/
 	     rptr <= {DEPTH{1'b0}};
 	     // End of automatics
 	  end
-	else if(!empty) // Load
+	else if(ren & !empty) // Load
 	  rptr <= rptr + 1'b1;
      end
 
@@ -64,10 +66,9 @@ module fifo (/*AUTOARG*/
      begin
 	if(rst_i)
 	  begin
-	     
+	     wptr1 <= 1;
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     wptr1 <= {DEPTH{1'b0}};
 	     wptr2 <= {DEPTH{1'b0}};
 	     // End of automatics
 	  end
@@ -78,13 +79,14 @@ module fifo (/*AUTOARG*/
 	  end
      end
 
+
    always @(posedge rclk or posedge rst_i)
      if(rst_i)
        empty <= 1'h1;
-	  /*AUTORESET*/
+   /*AUTORESET*/
        else
-	 empty <= (rptr == wptr2);
-   
+	 empty <= (rptr == (wptr1 - 1'b1));
+
    // Write Clock Domain
    // Write Pointer, Up Counter
    reg [DEPTH-1:0] 	wptr;
@@ -98,13 +100,13 @@ module fifo (/*AUTOARG*/
 	     wptr <= {DEPTH{1'b0}};
 	     // End of automatics
 	  end
-	else if(!full) // Load
+	else if(wen & !full) // Load
 	  wptr <= wptr + 1'b1;
      end // always @ (posedge wclk or posedge rst_i)
    
 
    always @(posedge wclk )
-     if (!full)
+     if (wen & !full)
        RAM[wptr] <= dat_i;
 
 
@@ -127,15 +129,17 @@ module fifo (/*AUTOARG*/
 	  end
      end
 
+//   assign full = (wptr == rptr2);
+
    always @(posedge wclk or posedge rst_i)
      if(rst_i)
-	  /*AUTORESET*/
-	  // Beginning of autoreset for uninitialized flops
-	  full <= 1'h0;
-	  // End of automatics
+       /*AUTORESET*/
+       // Beginning of autoreset for uninitialized flops
+       full <= 1'h0;
+       // End of automatics
        else
-	 full <= (wptr == rptr2);
- 
+	 full <= (wptr == (rptr1 -1'b1));
+
 endmodule // fifo
 
 

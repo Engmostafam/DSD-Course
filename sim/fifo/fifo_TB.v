@@ -8,8 +8,10 @@ module fifo_TB (/*AUTOARG*/);
   // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
   reg [WIDTH-1:0]	dat_i;			// To fifo0 of fifo.v
   reg			rclk;			// To fifo0 of fifo.v
+  reg			ren;			// To fifo0 of fifo.v
   reg			rst_i;			// To fifo0 of fifo.v
   reg			wclk;			// To fifo0 of fifo.v
+  reg			wen;			// To fifo0 of fifo.v
   // End of automatics
 
    /*AUTOWIRE*/
@@ -31,59 +33,58 @@ module fifo_TB (/*AUTOARG*/);
 	  // Inputs
 	  .dat_i			(dat_i[WIDTH-1:0]),
 	  .wclk				(wclk),
+	  .wen				(wen),
 	  .rclk				(rclk),
+	  .ren				(ren),
 	  .rst_i			(rst_i));
    
  
 
 
    // Clock Generation
+   always #5 wclk <= ~wclk;
+   always #10 rclk <= ~rclk;
+   always #9 dat_i <= $random;
    
-   always @(/*AUTOSENSE*/full or wclk_i)
-     if(full)
-       wclk <= 1'b0;
+   
+   
+   always @(/*AUTOSENSE*/full or rst_i)
+     if(full | rst_i |wdis)
+       wen <= 1'b0;
      else
-       wclk <= wclk_i;
+       wen <= 1'b1;
 
-   always @(/*AUTOSENSE*/empty or rclk_i)
-     if(empty)
-       rclk <= 1'b0;
+   always @(/*AUTOSENSE*/empty or rst_i)
+     if(empty | rst_i | rdis)
+       ren <= 1'b0;
      else
-       rclk <= rclk_i;
+       ren <= 1'b1;
 
-   reg 			rclk_i, wclk_i;
+   reg 			wdis, rdis;
+   
    
    initial begin
       $dumpfile("output.vcd");
       $dumpvars(0,fifo_TB);
 
       rst_i <= 0;
-      wclk_i <= 0;
-      rclk_i <= 0;
+      wen <=0;
+      ren <=1;
+      wdis <= 0;
+      rdis <= 0;
       
-      #10 rst_i <= 1;
-      #10 rst_i <= 0;
+      wclk <= $random;
+      rclk <= $random;
+      
+      #8 rst_i <= 1;
+      #8 rst_i <= 0;
 
-      #20
-	dat_i <= 4'hA;
-      #5
-	wclk_i <= 1;
-      #5
-	dat_i <=4'h7;
-	wclk_i <= 0;
-      #5
-	wclk_i <= 1;
-      #5
-	dat_i <=4'hB;
-	wclk_i <= 0;
-      #5
-	wclk_i <= 1;
-
-      #20
-	rclk_i <=1;
-      #5
-	rclk_i <=0;
-      #20 $finish;
+      #100
+	wdis <= 1;
+      #100
+	wdis <= 0;
+      
+      #200 $finish;
       
    end
  
