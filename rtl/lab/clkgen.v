@@ -1,3 +1,8 @@
+/*
+ 50% duty cycle
+ can do even division only 
+ */
+
 module clkgen (/*AUTOARG*/
    // Outputs
    clk_o,
@@ -10,9 +15,10 @@ module clkgen (/*AUTOARG*/
    input rst_i;
    output clk_o;
 
-   parameter CLKIN = 50;
-   parameter CLKOUT = 25;
-   parameter DIVIDE = 0.5*(1/CLKOUT)*CLKIN - 1;
+   parameter CLKIN = 50; // Input frequency in MHZ
+   parameter CLKOUT = 0.1; // OUTPUT frequency in MHZ, can take point form values 
+   localparam DIVIDE = 0.5*(1.0/CLKOUT)*CLKIN - 1; // Counter loadable value is approximated to integer when put into counter so 1.5 is 2, 1.7 is 2, 1.4 is 1. 
+
    
 
    /*AUTOREG*/

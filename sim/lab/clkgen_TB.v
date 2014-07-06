@@ -1,4 +1,3 @@
-
 module clkgen_TB (/*AUTOARG*/);
 
   /*AUTOREGINPUT*/
@@ -13,16 +12,12 @@ module clkgen_TB (/*AUTOARG*/);
    // End of automatics
 
    parameter CLKIN = 50;
-   parameter CLKOUT = 25;
-   parameter DIVIDE = 0.5*(1.0/CLKOUT)*CLKIN - 1;
-   localparam try= (1.0/CLKOUT);
-   
+   parameter CLKOUT = 10;
    
    clkgen #(/*AUTOINSTPARAM*/
 	    // Parameters
 	    .CLKIN			(CLKIN),
-	    .CLKOUT			(CLKOUT),
-	    .DIVIDE			(DIVIDE))
+	    .CLKOUT			(CLKOUT))
    clkgen0 (/*AUTOINST*/
 	    // Outputs
 	    .clk_o			(clk_o),
@@ -40,8 +35,9 @@ module clkgen_TB (/*AUTOARG*/);
    initial begin
       $dumpfile("output.vcd");
       $dumpvars(0,clkgen_TB);
-      $display(DIVIDE);
+//      $display (DIVIDE);
       
+
       clk_i <= $random;
       #10 rst_i <= 1;
       #20 rst_i <= 0;
