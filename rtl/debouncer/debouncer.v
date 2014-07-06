@@ -1,22 +1,23 @@
 /*
  debouncer circuit 
- for a 50 MHZ clock 
- waits for at least 20 ms to clear debounces 
+ for a 50 MHZ
+ waits around 20 ms to clear debounces 
 */ 
 
 module debouncer(/*AUTOARG*/
    // Outputs
-   push_out,
+   pulse,
    // Inputs
    clk_i, rst_i, push
    );
 
    parameter n=19; // wait time = 2^n * 1/freq
    
-   output push_out;
    input  clk_i;
    input  rst_i;
    input  push;
+   output pulse;
+   
    
    /*AUTOREG*/
 
@@ -77,9 +78,51 @@ module debouncer(/*AUTOARG*/
 			  (~|cnt)? stat0 : wt0_3;
 	endcase // case (state)
      end // always @ (...
-   
 
-   assign push_out = (state == stat1)? 1'b1 : 
-		     (state == stat0)? 1'b0 : push_out;
-       
+   reg push_out;
+   always @(/*AUTOSENSE*/rst_i or state)
+     if(rst_i)
+       /*AUTORESET*/
+       // Beginning of autoreset for uninitialized flops
+       push_out <= 1'h0;
+       // End of automatics
+       else if(state == stat1)
+	 push_out <= 1'b1;
+       else if(state == stat0)
+	 push_out <= 1'b0;
+       else
+	 push_out <= push_out;
+
+   reg [1:0] sample;
+   always @(posedge clk_i)
+     begin
+	if(rst_i)
+	  begin
+	     /*AUTORESET*/
+	     // Beginning of autoreset for uninitialized flops
+	     sample <= 2'h0;
+	     // End of automatics
+	  end
+	else
+	  begin
+	     sample <= {sample[0] , push_out};
+	  end
+     end // always @ (posedge clk_i)
+
+   reg  pulse;
+   always @(posedge clk_i)
+     begin
+	if(rst_i)
+	  begin
+	     /*AUTORESET*/
+	     // Beginning of autoreset for uninitialized flops
+	     pulse <= 1'h0;
+	     // End of automatics
+	  end
+	else
+	  begin
+	     pulse <= (sample == 2'b01);
+	  end
+     end
+
 endmodule // debouncer
