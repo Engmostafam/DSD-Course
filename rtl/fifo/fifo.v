@@ -42,34 +42,38 @@ module fifo (/*AUTOARG*/
 
    // Read Clock Domain
    // Read Pointer, Up Counter
-   reg [DEPTH-1:0] 	rptr;
-
+   reg [DEPTH:0] 	rptr; // MSB not an address
+   wire [DEPTH-1:0] 	rcrnt; // Current read address
+   
    always @(posedge rclk or posedge rst_i)
      begin
 	if(rst_i)
 	  begin
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     rptr <= {DEPTH{1'b0}};
+	     rptr <= {(1+(DEPTH)){1'b0}};
 	     // End of automatics
 	  end
 	else if(ren & !empty) // Load
 	  rptr <= rptr + 1'b1;
-     end
+     end // always @ (posedge rclk or posedge rst_i)
 
-   assign dat_o = RAM[rptr];
+   assign rcrnt = rptr[DEPTH-1:0];
+   
+   assign dat_o = RAM[rcrnt];
    
    // Sync For Write Pointer
-   reg [DEPTH-1:0] wptr1, wptr2;
+   reg [DEPTH:0] wptr1, wptr2;
    
    always @(posedge rclk or posedge rst_i)
      begin
 	if(rst_i)
 	  begin
-	     wptr1 <= 1;
+
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     wptr2 <= {DEPTH{1'b0}};
+	     wptr1 <= {(1+(DEPTH)){1'b0}};
+	     wptr2 <= {(1+(DEPTH)){1'b0}};
 	     // End of automatics
 	  end
 	else
@@ -80,16 +84,19 @@ module fifo (/*AUTOARG*/
      end
 
 
-   always @(posedge rclk or posedge rst_i)
+   always @(/*AUTOSENSE*/rptr or rst_i or wptr1)
      if(rst_i)
        empty <= 1'h1;
    /*AUTORESET*/
        else
-	 empty <= (rptr == (wptr1 - 1'b1));
+	 empty <= ((rptr[DEPTH] ~^ wptr1[DEPTH]) & (rptr[DEPTH-1:0] == wptr1[DEPTH-1:0]));
+   
 
    // Write Clock Domain
    // Write Pointer, Up Counter
-   reg [DEPTH-1:0] 	wptr;
+   reg [DEPTH:0] 	wptr;
+   wire [DEPTH-1:0] 	wcrnt;
+   
 
    always @(posedge wclk or posedge rst_i)
      begin
@@ -97,30 +104,33 @@ module fifo (/*AUTOARG*/
 	  begin
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     wptr <= {DEPTH{1'b0}};
+	     wptr <= {(1+(DEPTH)){1'b0}};
 	     // End of automatics
 	  end
 	else if(wen & !full) // Load
 	  wptr <= wptr + 1'b1;
      end // always @ (posedge wclk or posedge rst_i)
+ 
+   assign wcrnt = wptr[DEPTH-1:0];
    
 
    always @(posedge wclk )
      if (wen & !full)
-       RAM[wptr] <= dat_i;
+       RAM[wcrnt] <= dat_i;
 
 
    // Sync For Read Pointer
-   reg [DEPTH-1:0] rptr1, rptr2;
+   reg [DEPTH:0] rptr1, rptr2;
    
    always @(posedge wclk or posedge rst_i)
      begin
 	if(rst_i)
 	  begin
-	     rptr1 <= {DEPTH{1'b1}};
-	     rptr2 <= {DEPTH{1'b1}};
-
 	     /*AUTORESET*/
+	     // Beginning of autoreset for uninitialized flops
+	     rptr1 <= {(1+(DEPTH)){1'b0}};
+	     rptr2 <= {(1+(DEPTH)){1'b0}};
+	     // End of automatics
 	  end
 	else
 	  begin
@@ -129,16 +139,15 @@ module fifo (/*AUTOARG*/
 	  end
      end
 
-//   assign full = (wptr == rptr2);
 
-   always @(posedge wclk or posedge rst_i)
+   always @(/*AUTOSENSE*/rptr1 or rst_i or wptr)
      if(rst_i)
        /*AUTORESET*/
        // Beginning of autoreset for uninitialized flops
        full <= 1'h0;
        // End of automatics
        else
-	 full <= (wptr == (rptr1 -1'b1));
+	 full <= ((wptr[DEPTH] ^ rptr1[DEPTH]) & (wptr[DEPTH-1:0] == rptr1[DEPTH-1:0]));
 
 endmodule // fifo
 

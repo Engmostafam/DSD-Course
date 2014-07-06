@@ -48,13 +48,13 @@ module fifo_TB (/*AUTOARG*/);
    
    
    
-   always @(/*AUTOSENSE*/full or rst_i)
-     if(full | rst_i |wdis)
+   always @(/*AUTOSENSE*/full or rst_i or wdis)
+     if(full | rst_i | wdis)
        wen <= 1'b0;
      else
        wen <= 1'b1;
 
-   always @(/*AUTOSENSE*/empty or rst_i)
+   always @(/*AUTOSENSE*/empty or rdis or rst_i)
      if(empty | rst_i | rdis)
        ren <= 1'b0;
      else
