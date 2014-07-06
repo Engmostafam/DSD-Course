@@ -1,12 +1,12 @@
 module fifo_TB (/*AUTOARG*/);
 
 
-   parameter WIDTH = 4;
-   parameter DEPTH = 2; // Power of 2
+   parameter DW = 4;
+   parameter AW = 2; 
    
   /*AUTOREGINPUT*/
   // Beginning of automatic reg inputs (for undeclared instantiated-module inputs)
-  reg [WIDTH-1:0]	dat_i;			// To fifo0 of fifo.v
+  reg [DW-1:0]		dat_i;			// To fifo0 of fifo.v
   reg			rclk;			// To fifo0 of fifo.v
   reg			ren;			// To fifo0 of fifo.v
   reg			rst_i;			// To fifo0 of fifo.v
@@ -16,22 +16,22 @@ module fifo_TB (/*AUTOARG*/);
 
    /*AUTOWIRE*/
    // Beginning of automatic wires (for undeclared instantiated-module outputs)
-   wire [WIDTH-1:0]	dat_o;			// From fifo0 of fifo.v
+   wire [DW-1:0]	dat_o;			// From fifo0 of fifo.v
    wire			empty;			// From fifo0 of fifo.v
    wire			full;			// From fifo0 of fifo.v
    // End of automatics
 
    fifo #(/*AUTOINSTPARAM*/
 	  // Parameters
-	  .WIDTH			(WIDTH),
-	  .DEPTH			(DEPTH))
+	  .DW				(DW),
+	  .AW				(AW))
    fifo0 (/*AUTOINST*/
 	  // Outputs
 	  .full				(full),
-	  .dat_o			(dat_o[WIDTH-1:0]),
+	  .dat_o			(dat_o[DW-1:0]),
 	  .empty			(empty),
 	  // Inputs
-	  .dat_i			(dat_i[WIDTH-1:0]),
+	  .dat_i			(dat_i[DW-1:0]),
 	  .wclk				(wclk),
 	  .wen				(wen),
 	  .rclk				(rclk),
