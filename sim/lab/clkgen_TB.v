@@ -12,8 +12,9 @@ module clkgen_TB (/*AUTOARG*/);
    // End of automatics
 
    parameter CLKIN = 50;
-   parameter CLKOUT = 10;
-   
+   parameter CLKOUT = 12;
+//   parameter DIVIDE = 0.5*(1.0/CLKOUT)*CLKIN - 1; // Counter loadable value is approximated to integer when put into counter so 1.5 is 2, 1.7 is 2, 1.4 is 1. 
+       
    clkgen #(/*AUTOINSTPARAM*/
 	    // Parameters
 	    .CLKIN			(CLKIN),
@@ -35,7 +36,7 @@ module clkgen_TB (/*AUTOARG*/);
    initial begin
       $dumpfile("output.vcd");
       $dumpvars(0,clkgen_TB);
-//      $display (DIVIDE);
+  //    $display (DIVIDE);
       
 
       clk_i <= $random;

@@ -1,9 +1,4 @@
 /*
- - Synchronous concurrent FIFO
- - Has no internal running clock
- - All resets need to be Asynchronous to account for the absence of a free running general clock 
- - Two Clock domains exist, Read Clock and Write Clock 
- - Read and Write Pointers are changed to gray code then passed through two FFs for synchronization when being used at the other clock domain
 */ 
 
 module top(/*AUTOARG*/
@@ -41,9 +36,9 @@ module top(/*AUTOARG*/
 
    parameter CLKIN = 50;
    parameter wclk_CLKOUT = 25;
-   parameter rclk_CLKOUT = 10;
-   parameter w_n = 18;
-   parameter r_n = 17;
+   parameter rclk_CLKOUT = 12.5;
+   parameter w_n = 17;
+   parameter r_n = 16;
    
 
    fifo #(/*AUTOINSTPARAM*/
