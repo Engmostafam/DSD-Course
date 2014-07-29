@@ -34,6 +34,7 @@ module fifo (/*AUTOARG*/
    
    /*AUTOREG*/
    // Beginning of automatic regs (for this module's undeclared outputs)
+   reg [DW-1:0]		dat_o;
    reg			empty;
    reg			full;
    // End of automatics
@@ -69,8 +70,22 @@ module fifo (/*AUTOARG*/
 	   .bin				(rptr[AW:0]));		 // Templated
 
    assign rcrnt = rptr[AW-1:0];   
-   assign dat_o = RAM[rcrnt];
    
+   always @(posedge rclk or posedge rst_i)
+     begin
+	if(rst_i)
+	  begin
+	     /*AUTORESET*/
+	     // Beginning of autoreset for uninitialized flops
+	     dat_o <= {DW{1'b0}};
+	     // End of automatics
+	  end
+	else if(ren & !empty)
+	  begin
+	     dat_o <= RAM[rcrnt];
+	  end
+     end
+
    // Sync For Write Pointer
    reg [AW:0] wptr1;
    always @(posedge rclk or posedge rst_i)
