@@ -24,8 +24,6 @@ module arbiter(/*AUTOARG*/
    reg [N-1:0]		GNT;
    // End of automatics
 
-   
-   
    // Latch on Requests & Synchronizer
    reg [N-1:0] 		rRQT;
    reg [N-1:0] 		rRQT1;
