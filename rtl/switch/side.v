@@ -15,8 +15,16 @@ module side(/*AUTOARG*/
    ackrx_0
    );
 
+   parameter  DW = 4;// Data Width
+   parameter  DEPTH = 2;// Defining Fifo Width to be 4
+   
+   localparam  AW_DEV = 2; // Address width for target devices 
+   localparam N_DEV = (1<<AW_DEV);
+   localparam N = N_DEV;
+   
 
-   output [N_DEV-1:0] int_wen_o;
+
+   output [3:0] int_wen_o;
    output [DW-1:0]    int_dat_o;
    
    /*AUTOINPUT*/
@@ -34,7 +42,7 @@ module side(/*AUTOARG*/
    input [DW-1:0]	dat_i_1;		// To P1 of port.v
    input [DW-1:0]	dat_i_2;		// To P2 of port.v
    input [DW-1:0]	dat_i_3;		// To P3 of port.v
-   input [N_DEV-1:0]	full_i;			// To P0 of port.v, ...
+   input [3:0]		full_i;			// To P0 of port.v, ...
    input [DW-1:0]	int_dat_i;		// To P0 of port.v, ...
    input [3:0]		int_wen_i;		// To P0 of port.v, ...
    input		rst_i;			// To P0 of port.v, ...
@@ -68,14 +76,9 @@ module side(/*AUTOARG*/
    /*AUTOREG*/
    // Beginning of automatic regs (for this module's undeclared outputs)
    reg [DW-1:0]		int_dat_o;
-   reg [N_DEV-1:0]	int_wen_o;
+   reg [3:0]		int_wen_o;
    // End of automatics
-   parameter AW_DEV = 2; // Address width for target devices 
-   parameter DW = 4;// Data Width
-   parameter DEPTH = 2;// Defining Fifo Width to be 4
-   parameter N_DEV = (1<<AW_DEV);
-   localparam N = N_DEV;
-   
+
    port #(/*AUTOINSTPARAM*/
 	  // Parameters
 	  .AW_DEV			(AW_DEV),
@@ -99,7 +102,7 @@ module side(/*AUTOARG*/
        .fifo_i				(int_dat_i[DW-1:0]),	 // Templated
        .wen				(int_wen_i[0]),		 // Templated
        .gnt				(gnt[0]),		 // Templated
-       .full_i				(full_i[N_DEV-1:0]));
+       .full_i				(full_i[3:0]));		 // Templated
 
    port #(/*AUTOINSTPARAM*/
 	  // Parameters
@@ -124,7 +127,7 @@ module side(/*AUTOARG*/
        .fifo_i				(int_dat_i[DW-1:0]),	 // Templated
        .wen				(int_wen_i[1]),		 // Templated
        .gnt				(gnt[1]),		 // Templated
-       .full_i				(full_i[N_DEV-1:0]));
+       .full_i				(full_i[3:0]));		 // Templated
 
    port #(/*AUTOINSTPARAM*/
 	  // Parameters
@@ -149,7 +152,7 @@ module side(/*AUTOARG*/
        .fifo_i				(int_dat_i[DW-1:0]),	 // Templated
        .wen				(int_wen_i[2]),		 // Templated
        .gnt				(gnt[2]),		 // Templated
-       .full_i				(full_i[N_DEV-1:0]));
+       .full_i				(full_i[3:0]));		 // Templated
 
    port #(/*AUTOINSTPARAM*/
 	  // Parameters
@@ -174,7 +177,7 @@ module side(/*AUTOARG*/
        .fifo_i				(int_dat_i[DW-1:0]),	 // Templated
        .wen				(int_wen_i[3]),		 // Templated
        .gnt				(gnt[3]),		 // Templated
-       .full_i				(full_i[N_DEV-1:0]));
+       .full_i				(full_i[3:0]));		 // Templated
 
 
    arbiter#(/*AUTOINSTPARAM*/
@@ -275,7 +278,7 @@ module side(/*AUTOARG*/
 	  begin
 	     /*AUTORESET*/
 	     // Beginning of autoreset for uninitialized flops
-	     int_wen_o <= {N_DEV{1'b0}};
+	     int_wen_o <= 4'h0;
 	     // End of automatics
 	  end
 	else if(|gnt1)
@@ -318,9 +321,7 @@ endmodule // top
 	  .fifo_i			(int_dat_i[DW-1:0]),
 	  .wen				(int_wen_i[@]),
 	  .gnt				(gnt[@]),
-	  .full_array			(full_array_i[N_DEV:0]));
-
-
+           .full_i				(full_i[3:0]),
     );
 */
 /*    

@@ -26,8 +26,7 @@ module arbiter(/*AUTOARG*/
 
    // Latch on Requests & Synchronizer
    reg [N-1:0] 		rRQT;
-   reg [N-1:0] 		rRQT1;
-   always @(posedge clk_i)
+   always @(/*AUTOSENSE*/RQT or rst_i)
      begin
 	if(rst_i)
 	  begin

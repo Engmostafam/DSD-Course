@@ -19,6 +19,10 @@ module switch(/*AUTOARG*/
    X_adr_i_0, X_ackrx_3, X_ackrx_2, X_ackrx_1, X_ackrx_0
    );
 
+   parameter DW = 4;// Data Width
+   parameter DEPTH = 2;// Defining Fifo Width to be 4
+
+   
    /*AUTOINPUT*/
    // Beginning of automatic inputs (from unused autoinst inputs)
    input		X_ackrx_0;		// To S_X of side.v
@@ -86,30 +90,24 @@ module switch(/*AUTOARG*/
    /*AUTOWIRE*/
 
    wire [DW-1:0]	Y_int_dat_o;
-   wire [N_DEV-1:0]	Y_int_wen_o;
+   wire [3:0] 		Y_int_wen_o;
    wire [DW-1:0] 	X_int_dat_o;
-   wire [N_DEV-1:0]	X_int_wen_o;
+   wire [3:0] 		X_int_wen_o;
    wire [3:0] 		X_full_o;
    wire [3:0] 		Y_full_o;
    
 
    /*AUTOREG*/
-   parameter AW_DEV = 2; // Address width for target devices 
-   parameter DW = 4;// Data Width
-   parameter DEPTH = 2;// Defining Fifo Width to be 4
-   parameter N_DEV = (1<<AW_DEV);
 
    side #(/*AUTOINSTPARAM*/
 	  // Parameters
-	  .AW_DEV			(AW_DEV),
 	  .DW				(DW),
-	  .DEPTH			(DEPTH),
-	  .N_DEV			(N_DEV))
+	  .DEPTH			(DEPTH))
    S_X (
 	.int_wen_i			(Y_int_wen_o),
 	.int_dat_i			(Y_int_dat_o),
 	.full_i				(Y_full_o),
-	.int_wen_o			(X_int_wen_o[N_DEV-1:0]),
+	.int_wen_o			(X_int_wen_o[3:0]),
 	.int_dat_o			(X_int_dat_o[DW-1:0]),
 	.full_o				(X_full_o[3:0]),	
 	/*AUTOINST*/
@@ -148,15 +146,13 @@ module switch(/*AUTOARG*/
 
    side #(/*AUTOINSTPARAM*/
 	  // Parameters
-	  .AW_DEV			(AW_DEV),
 	  .DW				(DW),
-	  .DEPTH			(DEPTH),
-	  .N_DEV			(N_DEV))
+	  .DEPTH			(DEPTH))
    S_Y (
 	.int_wen_i			(X_int_wen_o),
 	.int_dat_i			(X_int_dat_o),
 	.full_i				(X_full_o),
-	.int_wen_o			(Y_int_wen_o[N_DEV-1:0]),
+	.int_wen_o			(Y_int_wen_o[3:0]),
 	.int_dat_o			(Y_int_dat_o[DW-1:0]),
 	.full_o				(Y_full_o[3:0]),	
 	/*AUTOINST*/

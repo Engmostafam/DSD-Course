@@ -100,10 +100,10 @@ module port (/*AUTOARG*/
    always @(posedge clk_i)
      begin
 	if(rst_i)
-	     /*AUTORESET*/
-	     // Beginning of autoreset for uninitialized flops
-	     validrx_0 <= 1'h0;
-	     // End of automatics
+	  /*AUTORESET*/
+	  // Beginning of autoreset for uninitialized flops
+	  validrx_0 <= 1'h0;
+	  // End of automatics
 	else if(ackrx)
 	  validrx_0 <= 1'b0;
 	else 
@@ -142,14 +142,15 @@ module port (/*AUTOARG*/
    wire dest_available;
    assign dest_available = ~|(adr_dec & full_i);
 
-   always @(/*AUTOSENSE*/acktx or dest_available or rst_i or validtx)
+   always @(/*AUTOSENSE*/acktx or dest_available or gnt or rst_i
+	    or validtx)
      if(rst_i)
        /*AUTORESET*/
        // Beginning of autoreset for uninitialized flops
        rqt <= 1'h0;
        // End of automatics
        else
-	 rqt <= validtx & dest_available & ~acktx;
+	 rqt <= validtx & dest_available & ~acktx & ~gnt;
    
    always @(posedge clk_i)
      begin
