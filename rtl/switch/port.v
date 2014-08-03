@@ -13,14 +13,13 @@ module port (/*AUTOARG*/
    acktx, dat_o, validrx, full, rqt,
    // Inputs
    dat_i, adr_i, validtx, ackrx, rst_i, clk_i, fifo_i, wen, gnt,
-   full_array
+   full_i
    );
 
    parameter AW_DEV = 2; // Address width for target devices 
    parameter DW = 4;// Data Width
-   parameter DEPTH = 2;// Defining Fifo Width to be 4
-   
-   localparam N_DEV = (1<<AW_DEV) - 1;
+   parameter DEPTH = 2;// Defining Fifo DEPTH to be 4
+   parameter N_DEV = (1<<AW_DEV); // Number of Target devices
    
    // External Interface
    // DATA IN
@@ -42,7 +41,7 @@ module port (/*AUTOARG*/
    output 	   full;
    
    input 	   gnt; // Gnt signal for this device
-   input [N_DEV:0] full_array; // This array contains the fifo status of all target devices
+   input [N_DEV -1:0] full_i; // This array contains the fifo status of all target devices
    output 	   rqt;
    
 	   
@@ -141,16 +140,16 @@ module port (/*AUTOARG*/
      endcase // case (adr_i)
    
    wire dest_available;
-   assign dest_available = ~|(adr_dec & full_array);
+   assign dest_available = ~|(adr_dec & full_i);
 
-   always @(/*AUTOSENSE*/dest_available or rst_i or validtx)
+   always @(/*AUTOSENSE*/acktx or dest_available or rst_i or validtx)
      if(rst_i)
        /*AUTORESET*/
        // Beginning of autoreset for uninitialized flops
        rqt <= 1'h0;
        // End of automatics
        else
-	 rqt <= validtx & dest_available;
+	 rqt <= validtx & dest_available & ~acktx;
    
    always @(posedge clk_i)
      begin
