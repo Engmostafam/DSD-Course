@@ -28,10 +28,10 @@ module switch_TB (/*AUTOARG*/);
    wire [DW-1:0]	X_dat_i_1;		// From D1X of device.v
    wire [DW-1:0]	X_dat_i_2;		// From D2X of device.v
    wire [DW-1:0]	X_dat_i_3;		// From D3X of device.v
-   wire [DW-1:0]	X_dat_o_0;		// From switch0 of switch.v
-   wire [DW-1:0]	X_dat_o_1;		// From switch0 of switch.v
-   wire [DW-1:0]	X_dat_o_2;		// From switch0 of switch.v
-   wire [DW-1:0]	X_dat_o_3;		// From switch0 of switch.v
+   wire [DW+2:0]	X_dat_o_0;		// From switch0 of switch.v
+   wire [DW+2:0]	X_dat_o_1;		// From switch0 of switch.v
+   wire [DW+2:0]	X_dat_o_2;		// From switch0 of switch.v
+   wire [DW+2:0]	X_dat_o_3;		// From switch0 of switch.v
    wire			X_validrx_0;		// From switch0 of switch.v
    wire			X_validrx_1;		// From switch0 of switch.v
    wire			X_validrx_2;		// From switch0 of switch.v
@@ -56,10 +56,10 @@ module switch_TB (/*AUTOARG*/);
    wire [DW-1:0]	Y_dat_i_1;		// From D1Y of device.v
    wire [DW-1:0]	Y_dat_i_2;		// From D2Y of device.v
    wire [DW-1:0]	Y_dat_i_3;		// From D3Y of device.v
-   wire [DW-1:0]	Y_dat_o_0;		// From switch0 of switch.v
-   wire [DW-1:0]	Y_dat_o_1;		// From switch0 of switch.v
-   wire [DW-1:0]	Y_dat_o_2;		// From switch0 of switch.v
-   wire [DW-1:0]	Y_dat_o_3;		// From switch0 of switch.v
+   wire [DW+2:0]	Y_dat_o_0;		// From switch0 of switch.v
+   wire [DW+2:0]	Y_dat_o_1;		// From switch0 of switch.v
+   wire [DW+2:0]	Y_dat_o_2;		// From switch0 of switch.v
+   wire [DW+2:0]	Y_dat_o_3;		// From switch0 of switch.v
    wire			Y_validrx_0;		// From switch0 of switch.v
    wire			Y_validrx_1;		// From switch0 of switch.v
    wire			Y_validrx_2;		// From switch0 of switch.v
@@ -73,17 +73,18 @@ module switch_TB (/*AUTOARG*/);
    switch #(/*AUTOINSTPARAM*/
 	    // Parameters
 	    .DW				(DW),
-	    .DEPTH			(DEPTH))
+	    .DEPTH			(DEPTH),
+	    .sw_adr			(sw_adr))
    switch0 (/*AUTOINST*/
 	    // Outputs
 	    .X_acktx_0			(X_acktx_0),
 	    .X_acktx_1			(X_acktx_1),
 	    .X_acktx_2			(X_acktx_2),
 	    .X_acktx_3			(X_acktx_3),
-	    .X_dat_o_0			(X_dat_o_0[DW-1:0]),
-	    .X_dat_o_1			(X_dat_o_1[DW-1:0]),
-	    .X_dat_o_2			(X_dat_o_2[DW-1:0]),
-	    .X_dat_o_3			(X_dat_o_3[DW-1:0]),
+	    .X_dat_o_0			(X_dat_o_0[DW+2:0]),
+	    .X_dat_o_1			(X_dat_o_1[DW+2:0]),
+	    .X_dat_o_2			(X_dat_o_2[DW+2:0]),
+	    .X_dat_o_3			(X_dat_o_3[DW+2:0]),
 	    .X_validrx_0		(X_validrx_0),
 	    .X_validrx_1		(X_validrx_1),
 	    .X_validrx_2		(X_validrx_2),
@@ -92,10 +93,10 @@ module switch_TB (/*AUTOARG*/);
 	    .Y_acktx_1			(Y_acktx_1),
 	    .Y_acktx_2			(Y_acktx_2),
 	    .Y_acktx_3			(Y_acktx_3),
-	    .Y_dat_o_0			(Y_dat_o_0[DW-1:0]),
-	    .Y_dat_o_1			(Y_dat_o_1[DW-1:0]),
-	    .Y_dat_o_2			(Y_dat_o_2[DW-1:0]),
-	    .Y_dat_o_3			(Y_dat_o_3[DW-1:0]),
+	    .Y_dat_o_0			(Y_dat_o_0[DW+2:0]),
+	    .Y_dat_o_1			(Y_dat_o_1[DW+2:0]),
+	    .Y_dat_o_2			(Y_dat_o_2[DW+2:0]),
+	    .Y_dat_o_3			(Y_dat_o_3[DW+2:0]),
 	    .Y_validrx_0		(Y_validrx_0),
 	    .Y_validrx_1		(Y_validrx_1),
 	    .Y_validrx_2		(Y_validrx_2),
@@ -105,10 +106,10 @@ module switch_TB (/*AUTOARG*/);
 	    .X_ackrx_1			(X_ackrx_1),
 	    .X_ackrx_2			(X_ackrx_2),
 	    .X_ackrx_3			(X_ackrx_3),
-	    .X_adr_i_0			(X_adr_i_0[1:0]),
-	    .X_adr_i_1			(X_adr_i_1[1:0]),
-	    .X_adr_i_2			(X_adr_i_2[1:0]),
-	    .X_adr_i_3			(X_adr_i_3[1:0]),
+	    .X_adr_i_0			(X_adr_i_0[2:0]),
+	    .X_adr_i_1			(X_adr_i_1[2:0]),
+	    .X_adr_i_2			(X_adr_i_2[2:0]),
+	    .X_adr_i_3			(X_adr_i_3[2:0]),
 	    .X_dat_i_0			(X_dat_i_0[DW-1:0]),
 	    .X_dat_i_1			(X_dat_i_1[DW-1:0]),
 	    .X_dat_i_2			(X_dat_i_2[DW-1:0]),
@@ -121,10 +122,10 @@ module switch_TB (/*AUTOARG*/);
 	    .Y_ackrx_1			(Y_ackrx_1),
 	    .Y_ackrx_2			(Y_ackrx_2),
 	    .Y_ackrx_3			(Y_ackrx_3),
-	    .Y_adr_i_0			(Y_adr_i_0[1:0]),
-	    .Y_adr_i_1			(Y_adr_i_1[1:0]),
-	    .Y_adr_i_2			(Y_adr_i_2[1:0]),
-	    .Y_adr_i_3			(Y_adr_i_3[1:0]),
+	    .Y_adr_i_0			(Y_adr_i_0[2:0]),
+	    .Y_adr_i_1			(Y_adr_i_1[2:0]),
+	    .Y_adr_i_2			(Y_adr_i_2[2:0]),
+	    .Y_adr_i_3			(Y_adr_i_3[2:0]),
 	    .Y_dat_i_0			(Y_dat_i_0[DW-1:0]),
 	    .Y_dat_i_1			(Y_dat_i_1[DW-1:0]),
 	    .Y_dat_i_2			(Y_dat_i_2[DW-1:0]),

@@ -1,8 +1,9 @@
 module switch_top (/*AUTOARG*/
    // Outputs
-   Y_acktx_3, Y_acktx_2, Y_acktx_1, Y_acktx_0, X_validrx_3,
-   X_validrx_2, X_validrx_1, X_validrx_0, X_dat_o_3, X_dat_o_2,
-   X_dat_o_1, X_dat_o_0, LED, valids,
+   adr_int_3, adr_int_2, adr_int_1, adr_int_0, Y_acktx_3, Y_acktx_2,
+   Y_acktx_1, Y_acktx_0, X_validrx_3, X_validrx_2, X_validrx_1,
+   X_validrx_0, X_dat_o_3, X_dat_o_2, X_dat_o_1, X_dat_o_0, LED,
+   valids,
    // Inputs
    rst_i, clk_i2, clk_i, Y_validtx_3, Y_validtx_2, Y_validtx_1,
    Y_validtx_0, Y_dat_i_3, Y_dat_i_2, Y_dat_i_1, Y_dat_i_0, Y_adr_i_3,
@@ -19,10 +20,10 @@ module switch_top (/*AUTOARG*/
    input		X_ackrx_1;		// To switch0 of switch.v
    input		X_ackrx_2;		// To switch0 of switch.v
    input		X_ackrx_3;		// To switch0 of switch.v
-   input [1:0]		Y_adr_i_0;		// To switch0 of switch.v
-   input [1:0]		Y_adr_i_1;		// To switch0 of switch.v
-   input [1:0]		Y_adr_i_2;		// To switch0 of switch.v
-   input [1:0]		Y_adr_i_3;		// To switch0 of switch.v
+   input [2:0]		Y_adr_i_0;		// To switch0 of switch.v
+   input [2:0]		Y_adr_i_1;		// To switch0 of switch.v
+   input [2:0]		Y_adr_i_2;		// To switch0 of switch.v
+   input [2:0]		Y_adr_i_3;		// To switch0 of switch.v
    input [DW-1:0]	Y_dat_i_0;		// To switch0 of switch.v
    input [DW-1:0]	Y_dat_i_1;		// To switch0 of switch.v
    input [DW-1:0]	Y_dat_i_2;		// To switch0 of switch.v
@@ -50,6 +51,10 @@ module switch_top (/*AUTOARG*/
    output		Y_acktx_1;		// From switch0 of switch.v
    output		Y_acktx_2;		// From switch0 of switch.v
    output		Y_acktx_3;		// From switch0 of switch.v
+   output [2:0]		adr_int_0;		// From switch0 of switch.v
+   output [2:0]		adr_int_1;		// From switch0 of switch.v
+   output [2:0]		adr_int_2;		// From switch0 of switch.v
+   output [2:0]		adr_int_3;		// From switch0 of switch.v
    // End of automatics
 
    output [3:0] 	LED; // LED LSB
@@ -124,15 +129,19 @@ module switch_top (/*AUTOARG*/
 	    .Y_acktx_1			(Y_acktx_1),
 	    .Y_acktx_2			(Y_acktx_2),
 	    .Y_acktx_3			(Y_acktx_3),
+	    .adr_int_0			(adr_int_0[2:0]),
+	    .adr_int_1			(adr_int_1[2:0]),
+	    .adr_int_2			(adr_int_2[2:0]),
+	    .adr_int_3			(adr_int_3[2:0]),
 	    // Inputs
 	    .X_ackrx_0			(X_ackrx_0),
 	    .X_ackrx_1			(X_ackrx_1),
 	    .X_ackrx_2			(X_ackrx_2),
 	    .X_ackrx_3			(X_ackrx_3),
-	    .X_adr_i_0			(X_adr_i_0[1:0]),
-	    .X_adr_i_1			(X_adr_i_1[1:0]),
-	    .X_adr_i_2			(X_adr_i_2[1:0]),
-	    .X_adr_i_3			(X_adr_i_3[1:0]),
+	    .X_adr_i_0			(X_adr_i_0[2:0]),
+	    .X_adr_i_1			(X_adr_i_1[2:0]),
+	    .X_adr_i_2			(X_adr_i_2[2:0]),
+	    .X_adr_i_3			(X_adr_i_3[2:0]),
 	    .X_dat_i_0			(X_dat_i_0[DW-1:0]),
 	    .X_dat_i_1			(X_dat_i_1[DW-1:0]),
 	    .X_dat_i_2			(X_dat_i_2[DW-1:0]),
@@ -145,10 +154,10 @@ module switch_top (/*AUTOARG*/
 	    .Y_ackrx_1			(Y_ackrx_1),
 	    .Y_ackrx_2			(Y_ackrx_2),
 	    .Y_ackrx_3			(Y_ackrx_3),
-	    .Y_adr_i_0			(Y_adr_i_0[1:0]),
-	    .Y_adr_i_1			(Y_adr_i_1[1:0]),
-	    .Y_adr_i_2			(Y_adr_i_2[1:0]),
-	    .Y_adr_i_3			(Y_adr_i_3[1:0]),
+	    .Y_adr_i_0			(Y_adr_i_0[2:0]),
+	    .Y_adr_i_1			(Y_adr_i_1[2:0]),
+	    .Y_adr_i_2			(Y_adr_i_2[2:0]),
+	    .Y_adr_i_3			(Y_adr_i_3[2:0]),
 	    .Y_dat_i_0			(Y_dat_i_0[DW-1:0]),
 	    .Y_dat_i_1			(Y_dat_i_1[DW-1:0]),
 	    .Y_dat_i_2			(Y_dat_i_2[DW-1:0]),
