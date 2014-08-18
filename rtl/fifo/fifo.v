@@ -70,7 +70,22 @@ module fifo (/*AUTOARG*/
 
    assign rcrnt = rptr[AW-1:0];   
    assign dat_o = RAM[rcrnt];
-   
+   /*
+   always @(posedge rclk or posedge rst_i)
+     begin
+	if(rst_i)
+	  begin
+
+	     // Beginning of autoreset for uninitialized flops
+	     dat_o <= {DW{1'b0}};
+	     // End of automatics
+	  end
+	else if(ren & !empty)
+	  begin
+	     dat_o <= RAM[rcrnt];
+	  end
+     end
+*/
    // Sync For Write Pointer
    reg [AW:0] wptr1;
    always @(posedge rclk or posedge rst_i)
