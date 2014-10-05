@@ -69,6 +69,6 @@ endmodule // stpmtr_TB
 
 
 // Local Variables:
-// verilog-library-directories:("." "../../rtl/assign0b/")
+// verilog-library-directories:("." "../../rtl/stepper_motor/")
 // verilog-library-files:("")
 // End:

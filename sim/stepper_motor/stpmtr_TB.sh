@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file=stpmtr_TB.v
-lib="-y ../../rtl/assign0b"
+lib="-y ../../rtl/stepper_motor"
 Vflag="-Wall -o output"
 
 echo "Simulating $file"

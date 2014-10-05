@@ -1,7 +1,7 @@
 #!/bin/bash
 
 file=deserial_TB.v
-lib="-y ../../rtl/test1"
+lib="-y ../../rtl/deserializer"
 Vflag="-Wall -o output"
 
 echo "Simulating $file"

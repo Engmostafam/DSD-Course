@@ -56,7 +56,7 @@ module pnser_TB (/*AUTOARG*/);
 endmodule // pnser
 
 // Local Variables:
-// verilog-library-directories:("." "../../rtl/assign0/")
+// verilog-library-directories:("." "../../rtl/packet_serializer/")
 // verilog-library-files:("")
 // End:
 
