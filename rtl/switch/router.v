@@ -1,3 +1,4 @@
+// Router, A combination of two switches. Not fully completed 
 module router (/*AUTOARG*/
    // Outputs
    BY_validrx_2, BY_validrx_1, BY_validrx_0, BY_dat_o_2, BY_dat_o_1,

@@ -1,3 +1,5 @@
+// TOP Module for FPGA Implementation
+// The underlying modules have been adjusted to work for the Router. To simply test the switch checkout the commit merge feature/arbiterswitch
 module switch_fpga (/*AUTOARG*/
    // Outputs
    valids, Y_acktx_3, Y_acktx_2, Y_acktx_1, Y_acktx_0, X_validrx_3,

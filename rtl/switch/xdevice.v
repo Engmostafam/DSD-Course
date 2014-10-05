@@ -1,3 +1,4 @@
+// Dummy device for testing the switch
 module xdevice (/*AUTOARG*/
    // Outputs
    adr_i, dat_i, validtx,
