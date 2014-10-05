@@ -1,5 +1,5 @@
 /*
- Assumptions
+  Assumptions
  
  - Internal Clock is much faster than serial input clk
  - Data is given out aligned to the LSB

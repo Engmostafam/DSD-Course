@@ -115,6 +115,6 @@ endmodule // deserial_TB
 
 
 // Local Variables:
-// verilog-library-directories:("." "../../rtl/test1/")
+// verilog-library-directories:("." "../../rtl/deserializer/")
 // verilog-library-files:("")
 // End:

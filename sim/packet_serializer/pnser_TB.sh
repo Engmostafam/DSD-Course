@@ -1,7 +1,7 @@
 #!/bin/bash
 
-file=stpmtr_TB.v
-lib="-y ../../rtl/assign0b"
+file=pnser_TB.v
+lib="-y ../../rtl/packet_serializer"
 Vflag="-Wall -o output"
 
 echo "Simulating $file"

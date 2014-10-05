@@ -1,3 +1,4 @@
+// Combines the switch with the dummy devices for testing
 module switch_top (/*AUTOARG*/
    // Outputs
    adr_int_3, adr_int_2, adr_int_1, adr_int_0, Y_acktx_3, Y_acktx_2,

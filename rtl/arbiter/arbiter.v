@@ -1,5 +1,6 @@
 /*
- -Round Robin Arbiter. 
+ - Round Robin Arbiter. 
+ - Equal Priority but fixed arrangement
  - N-Arbiter
 */ 
 
